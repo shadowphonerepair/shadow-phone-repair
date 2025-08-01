@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Here you would typically send the data to a server
             // For this example, we'll just show an alert
-            alert(`Thank you, ${name}! Your message has been received. We'll contact you soon at ${phone}.`);
+            alert(`Thank you, ${name}! Your message has been received.`);
             
             // Reset the form
             contactForm.reset();
