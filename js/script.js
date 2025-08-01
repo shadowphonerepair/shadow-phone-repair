@@ -86,3 +86,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run once on page load
     animateOnScroll();
 });
+
+// Theme switcher functionality
+const themeToggle = document.getElementById('theme-toggle');
+const themeStyle = document.getElementById('theme-style');
+const currentTheme = localStorage.getItem('theme') || 'light';
+
+// Apply saved theme
+document.documentElement.setAttribute('data-theme', currentTheme);
+
+// Toggle theme
+themeToggle.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  
+  // Update button state
+  updateThemeButton(newTheme);
+});
+
+// Update button based on theme
+function updateThemeButton(theme) {
+  const moonIcon = themeToggle.querySelector('.fa-moon');
+  const sunIcon = themeToggle.querySelector('.fa-sun');
+  
+  if (theme === 'dark') {
+    moonIcon.style.opacity = '0';
+    moonIcon.style.transform = 'rotate(90deg)';
+    sunIcon.style.opacity = '1';
+    sunIcon.style.transform = 'rotate(0deg)';
+  } else {
+    moonIcon.style.opacity = '1';
+    moonIcon.style.transform = 'rotate(0deg)';
+    sunIcon.style.opacity = '0';
+    sunIcon.style.transform = 'rotate(90deg)';
+  }
+}
+
+// Initialize button state
+updateThemeButton(currentTheme);
