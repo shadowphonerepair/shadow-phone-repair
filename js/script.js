@@ -35,28 +35,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Contact form submission
     const contactForm = document.getElementById('contactForm');
-    
+
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form values
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
-            
-            // Here you would typically send the data to a server
-            // For this example, we'll just show an alert
-            alert(`Thank you, ${name}! Your message has been received.`);
-            
-            // Reset the form
-            contactForm.reset();
+
+            const botToken = '8032211561:AAEH86izjI5_bvtcX-JbnZw2WVrwoDL6JTI'; // Replace with your bot token
+            const chatId = '7181820663';     // Replace with your Telegram user ID
+
+            const text = `
+📩 *New Contact Form Submission*:
+👤 *Name:* ${name}
+📞 *Phone:* ${phone}
+📧 *Email:* ${email}
+📝 *Message:* ${message}
+            `;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: text,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Thank you, ${name}! Your message has been sent.`);
+                    contactForm.reset();
+                } else {
+                    alert('There was an error sending your message. Please try again later.');
+                }
+            })
+            .catch(error => {
+                console.error('Telegram API Error:', error);
+                alert('Failed to send message.');
+            });
         });
-    }
-    
+    }    
     // Add animation to elements when scrolling
     const animateOnScroll = function() {
         const elements = document.querySelectorAll('.service-card, .about-image img, .contact-info, .contact-form');
