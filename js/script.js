@@ -35,12 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    <script>
     const contactForm = document.getElementById('contactForm');
+    const submitButton = document.querySelector('#contactForm button[type="submit"]');
 
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
@@ -57,6 +59,16 @@ document.addEventListener('DOMContentLoaded', function() {
 📝 *Message:* ${message}
             `;
 
+            let countdown = 5;
+            submitButton.disabled = true;
+            submitButton.textContent = `Please wait... (${countdown}s)`;
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                submitButton.textContent = `Please wait... (${countdown}s)`;
+                if (countdown <= 0) clearInterval(countdownInterval);
+            }, 1000);
+
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: {
@@ -69,19 +81,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             })
             .then(response => {
+                clearInterval(countdownInterval);
                 if (response.ok) {
+                    submitButton.textContent = 'Message Sent!';
                     alert(`Thank you, ${name}! Your message has been sent.`);
                     contactForm.reset();
                 } else {
+                    submitButton.textContent = 'Failed. Try Again';
                     alert('There was an error sending your message. Please try again later.');
                 }
+                setTimeout(() => {
+                    submitButton.textContent = 'Send Message';
+                    submitButton.disabled = false;
+                }, 2000);
             })
             .catch(error => {
+                clearInterval(countdownInterval);
                 console.error('Telegram API Error:', error);
+                submitButton.textContent = 'Failed. Try Again';
                 alert('Failed to send message.');
+                setTimeout(() => {
+                    submitButton.textContent = 'Send Message';
+                    submitButton.disabled = false;
+                }, 2000);
             });
         });
-    }    
+    }
+</script>
+
     // Add animation to elements when scrolling
     const animateOnScroll = function() {
         const elements = document.querySelectorAll('.service-card, .about-image img, .contact-info, .contact-form');
