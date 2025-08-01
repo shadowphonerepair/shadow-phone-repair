@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    <script>
     const contactForm = document.getElementById('contactForm');
     const submitButton = document.querySelector('#contactForm button[type="submit"]');
 
@@ -59,14 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
 📝 *Message:* ${message}
             `;
 
-            let countdown = 5;
+            let secondsPassed = 0;
             submitButton.disabled = true;
-            submitButton.textContent = `Please wait... (${countdown}s)`;
+            submitButton.textContent = `Please wait... (${secondsPassed}s)`;
+
+            const start = Date.now();
 
             const countdownInterval = setInterval(() => {
-                countdown--;
-                submitButton.textContent = `Please wait... (${countdown}s)`;
-                if (countdown <= 0) clearInterval(countdownInterval);
+                secondsPassed = Math.floor((Date.now() - start) / 1000);
+                submitButton.textContent = `Please wait... (${secondsPassed}s)`;
             }, 1000);
 
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -82,12 +82,13 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 clearInterval(countdownInterval);
+                const duration = Math.floor((Date.now() - start) / 1000);
                 if (response.ok) {
-                    submitButton.textContent = 'Message Sent!';
+                    submitButton.textContent = `Message Sent! (${duration}s)`;
                     alert(`Thank you, ${name}! Your message has been sent.`);
                     contactForm.reset();
                 } else {
-                    submitButton.textContent = 'Failed. Try Again';
+                    submitButton.textContent = `Failed. Try Again (${duration}s)`;
                     alert('There was an error sending your message. Please try again later.');
                 }
                 setTimeout(() => {
@@ -97,8 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 clearInterval(countdownInterval);
+                const duration = Math.floor((Date.now() - start) / 1000);
                 console.error('Telegram API Error:', error);
-                submitButton.textContent = 'Failed. Try Again';
+                submitButton.textContent = `Failed. Try Again (${duration}s)`;
                 alert('Failed to send message.');
                 setTimeout(() => {
                     submitButton.textContent = 'Send Message';
@@ -107,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-</script>
 
     // Add animation to elements when scrolling
     const animateOnScroll = function() {
