@@ -1,0 +1,92 @@
+/* Light Theme (default) */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #6c63ff;
+  --secondary-color: #4a42e8;
+  --card-bg: #f8f9fa;
+  --header-bg: #ffffff;
+  --footer-bg: #212529;
+  --border-color: #e0e0e0;
+  --input-bg: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #f8f9fa;
+  --primary-color: #7c73ff;
+  --secondary-color: #5a52e8;
+  --card-bg: #1e1e1e;
+  --header-bg: #1a1a1a;
+  --footer-bg: #000000;
+  --border-color: #333333;
+  --input-bg: #2d2d2d;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Apply theme variables */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+header {
+  background-color: var(--header-bg);
+}
+
+.service-card, .contact-info, .contact-form, .feature {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.form-group input, 
+.form-group textarea {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+/* Theme switcher button */
+.theme-switcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+#theme-toggle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+#theme-toggle i {
+  position: absolute;
+  transition: all 0.3s ease;
+}
+
+#theme-toggle .fa-sun {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+[data-theme="dark"] #theme-toggle .fa-moon {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+[data-theme="dark"] #theme-toggle .fa-sun {
+  opacity: 1;
+  transform: rotate(0deg);
+}
